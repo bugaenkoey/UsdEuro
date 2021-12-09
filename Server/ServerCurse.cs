@@ -37,7 +37,7 @@ namespace Server
 
 
                     Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine($"\t NEW CONNECT");
+                    Console.WriteLine($"\t NEW CONNECT - {client.Client.RemoteEndPoint.ToString()}");
                     Console.ResetColor();
 
                     ConnectedClient connectedClient = new ConnectedClient(client);
@@ -138,6 +138,16 @@ namespace Server
                     networkStream = client.GetStream();
                     request = GetMessage();
 
+                    if (request.ToUpper() == "EXIT")
+                    {
+                        //   message = $"{request}";
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        SendMessage(request);
+                        //   Console.ResetColor();
+
+                        Disconnect();
+                        return;
+                    }
 
                     if (count >= maxClientCount)
                     {
@@ -147,7 +157,7 @@ namespace Server
 
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         SendMessage(message);
-                        Console.ResetColor();
+                        //   Console.ResetColor();
 
                         Disconnect();
                         //  continue;
@@ -161,23 +171,17 @@ namespace Server
                     if (request.ToUpper() == "USD EURO")
                     {
                         message = $"Curse:{request} = {Math.Round(curse, roundCurse)}";
+                        Console.ForegroundColor = ConsoleColor.Green;
                         SendMessage(message);
+
                     }
                     if (request.ToUpper() == "EURO USD")
                     {
                         message = $"Curse: {request} = {Math.Round(1 / curse, roundCurse)}";
+                        Console.ForegroundColor = ConsoleColor.Blue;
                         SendMessage(message);
                     }
-                    if (request.ToUpper() == "EXIT")
-                    {
-                        //   message = $"{request}";
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        SendMessage(request);
-                        Console.ResetColor();
 
-                        Disconnect();
-                        return;
-                    }
 
 
 
@@ -219,6 +223,7 @@ namespace Server
                 networkStream.Write(byContinue, 0, byContinue.Length);
 
                 Console.WriteLine(message);
+                Console.ResetColor();
             }
 
             string GetMessage()
@@ -238,15 +243,14 @@ namespace Server
             }
         }
     }
-
-    public class LogConnect
+    public struct LogConnect
     {
         public string socket;
         public DateTime BeginDateTime;
         public decimal curse;
         public DateTime EndDateTime;
 
-        public LogConnect() { }
+        //  public LogConnect() { }
         public void Save()
         {
             string log = $"{socket}|{BeginDateTime.ToString("O")}|{curse}|{EndDateTime.ToString("O")}";
@@ -260,7 +264,10 @@ namespace Server
                 {
                     sw.WriteLine(log);
                 }
+
+                Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine("Запись выполнена");
+                Console.ResetColor();
             }
             catch (Exception e)
             {

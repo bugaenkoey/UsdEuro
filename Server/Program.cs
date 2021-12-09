@@ -7,7 +7,7 @@ namespace Server
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("ServerCurse");
 
             IPAddress iPAddress = IPAddress.Loopback;
             int port = 80;

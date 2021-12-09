@@ -7,14 +7,18 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("ClientCurse");
 
             IPAddress iPAddress = IPAddress.Loopback;
             int port = 80;
             ClientCurse clientCurse = new ClientCurse(iPAddress, port);
             Console.WriteLine(clientCurse.Dialog("USD EURO"));
+            Test(iPAddress, port);
 
+        }
 
+        private static void Test(IPAddress iPAddress, int port)
+        {
             string[] request = { "EXIT", "USD EURO", "EURO USD" };
 
             ClientCurse[] clients =  {
@@ -44,8 +48,6 @@ namespace Client
                 Console.WriteLine(clients[n].Dialog(strRequest));
 
             }
-
-
         }
     }
 }
