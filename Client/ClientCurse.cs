@@ -93,15 +93,17 @@ namespace Client
             }
             catch (SocketException sockEx)
             {
-                Console.WriteLine("Ошибка сокета:" +
-                sockEx.Message);
-                // Disconnect();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Ошибка сокета:{sockEx.Message}");
+                Console.ResetColor();
+                 Disconnect();
             }
             catch (Exception Ex)
             {
-                Console.WriteLine("Ошибка:" +
-                Ex.Message);
-                // Disconnect();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Ошибка:{Ex.Message}");
+                Console.ResetColor();
+                 Disconnect();
             }
             finally
             {
